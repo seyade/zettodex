@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: none
 pragma solidity ^0.8.27;
 
-contract SampleWallet {
+contract ZettoWallet {
   mapping(address => uint256) private balances;
 
   event Deposit(address indexed user, uint256 amount);
