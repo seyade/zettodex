@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { SampleWallet, ZettoWallet } from "../typechain-types";
+import { ZettoWallet } from "../typechain-types";
 import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 
-describe("SampleWallet", () => {
+describe("ZettoWallet", () => {
   let zettoWallet: ZettoWallet;
   let userOne: SignerWithAddress;
   let userTwo: SignerWithAddress;
