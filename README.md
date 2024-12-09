@@ -1,8 +1,8 @@
-#ZETTODEX
+# ZETTODEX
 
-##Just a project to maintain & improve my blockchain skills
+## Just a project to maintain & improve my blockchain skills
 
-###Tech stack
+### Tech stack
 
 - Solidity (Ethereum)
 - Hardhat
