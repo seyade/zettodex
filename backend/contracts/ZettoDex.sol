@@ -28,7 +28,7 @@ contract ZettoDex {
   function addLiquidity(uint256 amount1, uint256 amount2) external {
     require(amount1 > 0 && amount2 > 0, "Amounts must be more than 0");
     require(token1.transferFrom(msg.sender, address(this), amount1), "Token 1 transfer failed");
-    require(token2.transferFrom(msg.sender, address(this), amount2), "Token 1 transfer failed");
+    require(token2.transferFrom(msg.sender, address(this), amount2), "Token 2 transfer failed");
 
     uint256 liquidity;
 
@@ -45,5 +45,27 @@ contract ZettoDex {
     reserve2 += amount2;
 
     emit LiquidityAdded(msg.sender, liquidity);
+  }
+
+  function removeLiquidity(uint256 liquidity) external {
+    require(
+      liquidity > 0 && liquidity <= liquidityProvided[msg.sender],
+      "Invalid liquidity amount"
+    );
+
+    // calculate token amount to return
+    uint256 amount1 = (liquidity * reserve1) / totalLiquidity;
+    uint256 amount2 = (liquidity * reserve2) / totalLiquidity;
+
+    // update reserves and liquidity
+    liquidityProvided[msg.sender] -= liquidity;
+    totalLiquidity -= liquidity;
+    reserve1 -= amount1;
+    reserve2 -= amount2;
+
+    require(token1.transfer(msg.sender, amount1), "Token 1 transfer failed");
+    require(token2.transfer(msg.sender, amount2), "Token 2 transfer failed");
+
+    emit LiquidityRemoved(msg.sender, liquidity);
   }
 }
