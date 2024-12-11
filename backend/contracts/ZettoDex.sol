@@ -94,7 +94,7 @@ contract ZettoDex {
       reserve1 -= amountOut;
     }
 
-    require(toToken.transfer(masg.sender, amountOut), "Output token transfer failed");
+    require(toToken.transfer(msg.sender, amountOut), "Output token transfer failed");
 
     emit TokenSwapped(msg.sender, amountIn, amountOut);
   }
