@@ -68,4 +68,34 @@ contract ZettoDex {
 
     emit LiquidityRemoved(msg.sender, liquidity);
   }
+
+  function swapTokens(IERC20 fromToken, IERC20 toToken, uint256 amountIn) external {
+    require(amountIn > 0, "Insufficient amount input");
+    require(
+      (fromToken == token1 && toToken == token2) || (fromToken == token1 && toToken == token2),
+      "Invalid token pair"
+    );
+    require(
+      fromToken.transferFrom(msg.sender, address(this), amountIn),
+      "Input token transfer failed"
+    );
+
+    uint256 amountOut;
+
+    if (fromToken == token1) {
+      // swap token1 for token2
+      amountOut = (amountIn * reserve2) / reserve1;
+      reserve1 += amountIn;
+      reserve2 -= amountOut;
+    } else {
+      // swap token2 for token1
+      amountOut = (amountIn * reserve1) / reserve2;
+      reserve2 += amountIn;
+      reserve1 -= amountOut;
+    }
+
+    require(toToken.transfer(masg.sender, amountOut), "Output token transfer failed");
+
+    emit TokenSwapped(msg.sender, amountIn, amountOut);
+  }
 }
