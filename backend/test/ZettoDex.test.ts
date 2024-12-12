@@ -12,6 +12,7 @@ describe("ZettoDex", () => {
   let trader: SignerWithAddress;
 
   beforeEach(async () => {
+    //get all the actors address
     [owner, liquidityProvider, trader] = await ethers.getSigners();
 
     // deploy dex and tokens
@@ -37,10 +38,29 @@ describe("ZettoDex", () => {
     await token2.transfer(trader.address, ethers.parseEther("500"));
   });
 
-  describe("Constructir", () => {
+  describe("Constructor", () => {
     it("should set the correct tokens", async () => {
       expect(await zettoDex.token1()).to.equal(await token1.getAddress());
       expect(await zettoDex.token2()).to.equal(await token2.getAddress());
+    });
+
+    it("should revert when the zero address", async () => {
+      const ZettoDexFactory = await ethers.getContractFactory("ZettoDex");
+
+      await expect(
+        ZettoDexFactory.deploy(ethers.ZeroAddress, await token2.getAddress())
+      ).to.be.revertedWith("Invalid token address");
+      await expect(
+        ZettoDexFactory.deploy(await token1.getAddress(), ethers.ZeroAddress)
+      ).to.be.revertedWith("Invalid token address");
+    });
+
+    it("should revert if tokens are the same", async () => {
+      const ZettoDexFactory = await ethers.getContractFactory("ZettoDex");
+
+      await expect(
+        ZettoDexFactory.deploy(await token1.getAddress(), await token1.getAddress())
+      ).to.be.revertedWith("Tokens must be different");
     });
   });
 });
