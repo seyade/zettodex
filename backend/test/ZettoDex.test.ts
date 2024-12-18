@@ -63,4 +63,50 @@ describe("ZettoDex", () => {
       ).to.be.revertedWith("Tokens must be different");
     });
   });
+
+  describe("Add Liquidity", () => {
+    it("should add initial liquidity pair", async () => {
+      const amount1 = ethers.parseEther("100");
+      const amount2 = ethers.parseEther("100");
+
+      await token1.connect(liquidityProvider).approve(await zettoDex.getAddress(), amount1);
+
+      await token2.connect(liquidityProvider).approve(await zettoDex.getAddress(), amount2);
+
+      await expect(zettoDex.connect(liquidityProvider).addLiquidity(amount1, amount2))
+        .to.emit(zettoDex, "LiquidityAdded")
+        .withArgs(liquidityProvider.address, amount1);
+
+      expect(await zettoDex.totalLiquidity()).to.equal(amount1);
+      expect(await zettoDex.reserve1()).to.equal(amount1);
+      expect(await zettoDex.reserve2()).to.equal(amount2);
+    });
+
+    it("should revert if 0 amounts", async () => {
+      await expect(zettoDex.connect(liquidityProvider).addLiquidity(0, 100)).to.be.revertedWith(
+        "Amounts must be more than 0"
+      );
+      await expect(zettoDex.connect(liquidityProvider).addLiquidity(100, 0)).to.be.revertedWith(
+        "Amounts must be more than 0"
+      );
+    });
+  });
+
+  describe("Remove Liquidity", () => {
+    beforeEach(async () => {
+      const amount1 = ethers.parseEther("100");
+      const amount2 = ethers.parseEther("100");
+
+      await token1.connect(liquidityProvider).approve(await zettoDex.getAddress(), amount1);
+      await token2.connect(liquidityProvider).approve(await zettoDex.getAddress(), amount2);
+
+      await zettoDex.connect(liquidityProvider).addLiquidity(amount1, amount2);
+    });
+
+    it("should remove liquidity pair", async () => {
+      const liquidityToBeRemoved = await zettoDex.liquidityProvided(liquidityProvider.address);
+    });
+
+    it("should revert if 0 amounts", async () => {});
+  });
 });
