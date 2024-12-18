@@ -1,22 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
+import React, { useState } from "react";
+import { ChevronsUpDown } from "lucide-react";
 import SwapInput from "./SwapInput";
 
 type DexProps = {};
 
 function Dex({}: DexProps) {
-  const [fromCurrentPrice, setFromCurrentPrice] = useState("");
-  const [toCurrentPrice, setToCurrentPrice] = useState();
   const [sellAmount, setSellAmount] = useState("");
-  const [buyAmount, setBuyAmount] = useState("");
   const [totalSellAmount, setTotalSellAmount] = useState(0);
   const [totalBuyAmount, setTotalBuyAmount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onHandleClick = () => {
-    alert("Crypto List popup");
+  const onToggleModal = () => {
+    setIsModalOpen(!isModalOpen);
   };
 
   const handleSellAmountChange = (
@@ -43,7 +40,7 @@ function Dex({}: DexProps) {
                 totalAmount={totalSellAmount}
                 cryptoIcon="/assets/sol.png"
                 onChange={handleSellAmountChange}
-                onClick={onHandleClick}
+                onClick={onToggleModal}
                 inputTitle="Sell"
                 showTotal
               />
@@ -60,7 +57,7 @@ function Dex({}: DexProps) {
                 totalAmount={totalBuyAmount}
                 cryptoIcon="/assets/usdc.png"
                 onChange={handleSellAmountChange}
-                onClick={onHandleClick}
+                onClick={onToggleModal}
                 inputTitle="Buy"
                 showTotal
                 disabled
