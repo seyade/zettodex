@@ -14,6 +14,8 @@ const Modal = ({ children, isOpen, onClose, title }: ModalProps) => {
   return createPortal(
     <div>
       <h1>Modal</h1>
+
+      <div>{children}</div>
     </div>,
     document.body
   );

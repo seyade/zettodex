@@ -99,14 +99,23 @@ describe("ZettoDex", () => {
 
       await token1.connect(liquidityProvider).approve(await zettoDex.getAddress(), amount1);
       await token2.connect(liquidityProvider).approve(await zettoDex.getAddress(), amount2);
-
       await zettoDex.connect(liquidityProvider).addLiquidity(amount1, amount2);
     });
 
     it("should remove liquidity pair", async () => {
       const liquidityToBeRemoved = await zettoDex.liquidityProvided(liquidityProvider.address);
+      const initialToken1Balance = await token1.balanceOf(liquidityProvider.address);
+      const initialToken2Balance = await token2.balanceOf(liquidityProvider.address);
+
+      await expect(zettoDex.connect(liquidityProvider).removeLiquidity(liquidityToBeRemoved))
+        .to.emit(zettoDex, "LiquidityRemoved")
+        .withArgs(liquidityProvider.address, liquidityToBeRemoved);
     });
 
-    it("should revert if 0 amounts", async () => {});
+    // TODO: it("should revert if 0 amounts", async () => {});
+  });
+
+  describe("Swap Tokens", () => {
+    // TODO
   });
 });
