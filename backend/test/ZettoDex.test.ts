@@ -110,12 +110,74 @@ describe("ZettoDex", () => {
       await expect(zettoDex.connect(liquidityProvider).removeLiquidity(liquidityToBeRemoved))
         .to.emit(zettoDex, "LiquidityRemoved")
         .withArgs(liquidityProvider.address, liquidityToBeRemoved);
+
+      const finalToken1Balance = await token1.balanceOf(liquidityProvider.address);
+      const finalToken2Balance = await token2.balanceOf(liquidityProvider.address);
+
+      expect(finalToken1Balance).to.be.gt(initialToken1Balance);
+      expect(finalToken2Balance).to.be.gt(initialToken2Balance);
+      expect(await zettoDex.liquidityProvided(liquidityProvider.address)).to.equal(0);
     });
 
-    // TODO: it("should revert if 0 amounts", async () => {});
+    it("should revert if 0 amounts", async () => {
+      await expect(zettoDex.connect(liquidityProvider).removeLiquidity(0)).to.be.revertedWith(
+        "Invalid liquidity amount"
+      );
+
+      await expect(zettoDex.connect(owner).removeLiquidity(100)).to.be.revertedWith(
+        "Invalid liquidity amount"
+      );
+    });
   });
 
   describe("Swap Tokens", () => {
-    // TODO
+    beforeEach(async () => {
+      // setup tokens for liquidity
+      const amount1 = ethers.parseEther("100");
+      const amount2 = ethers.parseEther("100");
+
+      // add liquidity to Dex to enable swapping
+      await token1.connect(liquidityProvider).approve(await zettoDex.getAddress(), amount1);
+      await token1.connect(liquidityProvider).approve(await zettoDex.getAddress(), amount2);
+      await zettoDex.connect(liquidityProvider).addLiquidity(amount1, amount2);
+
+      // approval of trader to trade the token in Dex
+      await token1.connect(trader).approve(await zettoDex.getAddress(), ethers.parseEther("50"));
+      await token2.connect(trader).approve(await zettoDex.getAddress(), ethers.parseEther("50"));
+    });
+
+    it("can swap token1 for token2", async () => {
+      const amountIn = ethers.parseEther("10");
+      const initialToken2Balance = await token2.balanceOf(trader.address);
+
+      await expect(
+        zettoDex
+          .connect(trader)
+          .swapTokens(await token1.getAddress(), await token2.getAddress(), amountIn)
+      ).to.emit(zettoDex, "TokenSwapped");
+
+      const finalToken2Balance = await token2.balanceOf(trader.address);
+      expect(finalToken2Balance).to.be.gt(initialToken2Balance);
+    });
+
+    it("can swap token2 for token1", async () => {
+      const amountIn = ethers.parseEther("5");
+      const initialToken1Balance = await token1.balanceOf(trader.address);
+
+      await expect(
+        zettoDex
+          .connect(trader)
+          .swapTokens(await token2.getAddress(), await token1.getAddress(), amountIn)
+      ).to.emit(zettoDex, "TokenSwapped");
+
+      const finalToken1Balance = await token1.balanceOf(trader.address);
+      expect(finalToken1Balance).to.be.gt(initialToken1Balance);
+    });
+
+    it("should revertwith error message if insufficient amount ", async () => {
+      await expect(
+        zettoDex.connect(trader).swapTokens(await token1.getAddress(), await token2.getAddress(), 0)
+      ).to.be.revertedWith("Insufficient amount input");
+    });
   });
 });
