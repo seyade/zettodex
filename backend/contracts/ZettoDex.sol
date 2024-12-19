@@ -72,7 +72,7 @@ contract ZettoDex {
   function swapTokens(IERC20 fromToken, IERC20 toToken, uint256 amountIn) external {
     require(amountIn > 0, "Insufficient amount input");
     require(
-      (fromToken == token1 && toToken == token2) || (fromToken == token1 && toToken == token2),
+      (fromToken == token1 && toToken == token2) || (fromToken == token2 && toToken == token1),
       "Invalid token pair"
     );
     require(
