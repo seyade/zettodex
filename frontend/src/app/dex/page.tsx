@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import { ChevronsUpDown } from "lucide-react";
 import SwapInput from "./SwapInput";
+import Link from "next/link";
+import Header from "@/components/Header";
 
-type DexProps = {};
-
-function Dex({}: DexProps) {
+function Dex() {
   const [sellAmount, setSellAmount] = useState("");
   const [totalSellAmount, setTotalSellAmount] = useState(0);
   const [totalBuyAmount, setTotalBuyAmount] = useState(0);
@@ -27,6 +27,7 @@ function Dex({}: DexProps) {
 
   return (
     <div>
+      <Header />
       <article>
         <section className="flex items-center justify-center h-screen bg-teal-950/10">
           <div className="w-1/3 py-6 px-4 bg-[#370617]/50 rounded-xl">
