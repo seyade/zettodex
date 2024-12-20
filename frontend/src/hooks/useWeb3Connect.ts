@@ -73,8 +73,8 @@ export function useWeb3Connect() {
   const disconnect = useCallback(() => {
     setState({
       isConnected: false,
-      account: null,
-      chainId: null,
+      account: "",
+      chainId: "",
     });
 
     if (window.ethereum) {
