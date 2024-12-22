@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ChevronsUpDown } from "lucide-react";
 import SwapInput from "./SwapInput";
-import Link from "next/link";
 import Header from "@/components/Header";
+import ConnectButton from "@/components/ConnectButton/ConnectButton";
 
 function Dex() {
   const [sellAmount, setSellAmount] = useState("");
@@ -27,7 +27,11 @@ function Dex() {
 
   return (
     <div>
-      <Header />
+      <Header>
+        <div className="flex flex-1 justify-end w-full">
+          <ConnectButton />
+        </div>
+      </Header>
       <article>
         <section className="flex items-center justify-center h-screen bg-teal-950/10">
           <div className="w-1/3 py-6 px-4 bg-[#370617]/50 rounded-xl">
