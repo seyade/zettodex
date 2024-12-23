@@ -27,11 +27,6 @@ function Dex() {
 
   return (
     <div>
-      <Header>
-        <div className="flex flex-1 justify-end w-full">
-          <ConnectButton />
-        </div>
-      </Header>
       <article>
         <section className="flex items-center justify-center h-screen bg-teal-950/10">
           <div className="w-1/3 py-6 px-4 bg-[#370617]/50 rounded-xl">
@@ -43,7 +38,7 @@ function Dex() {
                 amountType="sellAmount"
                 value={sellAmount}
                 totalAmount={totalSellAmount}
-                cryptoIcon="/assets/sol.png"
+                cryptoIcon="/assets/eth.png"
                 onChange={handleSellAmountChange}
                 onClick={onToggleModal}
                 inputTitle="Sell"
@@ -70,7 +65,7 @@ function Dex() {
 
               <div>
                 <button className="flex w-full py-4 px-6 mt-4 justify-center items-center rounded-lg bg-[#002855] hover:bg-[#002855]/75 transition-colors duration-300">
-                  <span className="text-lg font-semibold ">Swap</span>
+                  <span className="text-lg font-semibold">Swap</span>
                 </button>
               </div>
             </form>

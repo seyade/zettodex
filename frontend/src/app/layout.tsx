@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import ConnectButton from "@/components/ConnectButton";
+import Header from "@/components/Header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,7 +30,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Header>
+          <div className="flex flex-1 justify-end w-full">
+            <ConnectButton />
+          </div>
+        </Header>
+        <main>{children}</main>
+        <footer></footer>
       </body>
     </html>
   );

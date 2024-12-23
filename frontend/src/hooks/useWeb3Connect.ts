@@ -17,11 +17,11 @@ export function useWeb3Connect() {
   const [error, setError] = useState(<string | null>null);
 
   const checkConnection = useCallback(async () => {
-    if (typeof window.ethereum === "undefined") {
-      throw new Error("Please install a Ethereum wallet, e.g. Metamask.");
-    }
-
     try {
+      if (typeof window.ethereum === "undefined") {
+        throw new Error("Please install a Ethereum wallet, e.g. Metamask.");
+      }
+
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
@@ -45,11 +45,11 @@ export function useWeb3Connect() {
   }, []);
 
   const connect = useCallback(async () => {
-    if (typeof window.ethereum === "undefined") {
-      throw new Error("Please install a Ethereum wallet, e.g. Metamask.");
-    }
-
     try {
+      if (typeof window.ethereum === "undefined") {
+        throw new Error("Please install a Ethereum wallet, e.g. Metamask.");
+      }
+
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
