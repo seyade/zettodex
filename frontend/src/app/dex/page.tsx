@@ -1,19 +1,48 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, SettingsIcon } from "lucide-react";
 import SwapInput from "./SwapInput";
-import Header from "@/components/Header";
-import ConnectButton from "@/components/ConnectButton/ConnectButton";
+
+import ZettoDexABI from "../../utils/abis/ZettoDex_ABI.json";
+import TokenABI from "../../utils/abis/MockERC20_ABI.json";
+
+import tokenlist from "../../utils/constants/tokenlist.json";
+import Modal from "@/components/Modal/Modal";
 
 function Dex() {
   const [sellAmount, setSellAmount] = useState("");
   const [totalSellAmount, setTotalSellAmount] = useState(0);
   const [totalBuyAmount, setTotalBuyAmount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tokenOneAmount, setTokenOneAmount] = useState();
+  const [tokenTwoAmount, setTokenTwoAmount] = useState();
+  const [tokenOne, setTokenOne] = useState(tokenlist[0]);
+  const [tokenTwo, setTokenTwo] = useState(tokenlist[1]);
 
-  const onToggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+  const ZETTODEX_CONTRACT = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  const TOKEN1_CONTRACT = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+  const TOKEN2_CONTRACT = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+
+  const [swapInput, setSwapInput] = useState({
+    fromToken: "",
+    toToken: "",
+    amountIn: "",
+  });
+
+  const switchTokens = () => {
+    const one = tokenOne;
+    const two = tokenTwo;
+    setTokenOne(two);
+    setTokenTwo(one);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   const handleSellAmountChange = (
@@ -27,28 +56,37 @@ function Dex() {
 
   return (
     <div>
+      {isModalOpen && <Modal onClose={closeModal}>Modal</Modal>}
       <article>
         <section className="flex items-center justify-center h-screen bg-teal-950/10">
           <div className="w-1/3 py-6 px-4 bg-[#370617]/50 rounded-xl">
-            <h3 className="font-bold text-lg py-2 px-4 mb-2 bg-slate-900 rounded-full inline-flex">
-              Swap
-            </h3>
+            <div className="flex justify-between items-center">
+              <h3 className="font-bold text-lg py-2 px-4 mb-2 bg-slate-900 rounded-full inline-flex">
+                Swap
+              </h3>
+              <SettingsIcon />
+            </div>
+
             <form>
               <SwapInput
                 amountType="sellAmount"
                 value={sellAmount}
                 totalAmount={totalSellAmount}
                 cryptoIcon="/assets/eth.png"
+                cryptoAsset={tokenOne}
                 onChange={handleSellAmountChange}
-                onClick={onToggleModal}
+                onClick={openModal}
                 inputTitle="Sell"
                 showTotal
               />
 
               <div className="z-10 flex justify-center items-center relative py-px">
-                <button className="absolute bg-slate-900 p-2 rounded-full border-4 border-zinc-400">
+                <div
+                  className="absolute bg-slate-900 hover:bg-slate-800 transition-colors duration-300 p-2 rounded-full border-4 border-zinc-400 cursor-pointer"
+                  onClick={switchTokens}
+                >
                   <ChevronsUpDown />
-                </button>
+                </div>
               </div>
 
               <SwapInput
@@ -56,8 +94,9 @@ function Dex() {
                 value={totalBuyAmount.toString()}
                 totalAmount={totalBuyAmount}
                 cryptoIcon="/assets/usdc.png"
+                cryptoAsset={tokenTwo}
                 onChange={handleSellAmountChange}
-                onClick={onToggleModal}
+                onClick={openModal}
                 inputTitle="Buy"
                 showTotal
                 disabled

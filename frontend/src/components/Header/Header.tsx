@@ -8,9 +8,19 @@ type HeaderProps = {
 const Header = ({ children }: HeaderProps) => {
   return (
     <nav className="flex items-center p-4">
-      <div className="flex gap-4 text-sm font-semibold">
-        <Link href="/dex">Swap</Link>
-        <Link href="/liquidity">Liquidity</Link>
+      <div className="flex flex-1 gap-1 text-sm font-semibold">
+        <Link
+          href="/dex"
+          className="py-2 px-3 rounded-sm hover:bg-white/10 transition-all duration-300"
+        >
+          Swap
+        </Link>
+        <Link
+          href="/liquidity"
+          className="py-2 px-3 rounded-sm hover:bg-white/10 transition-all duration-300"
+        >
+          Liquidity
+        </Link>
       </div>
       {children}
     </nav>

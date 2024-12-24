@@ -6,6 +6,7 @@ type SwapInputProps = {
   amountType: string;
   inputTitle: string;
   cryptoIcon: any;
+  cryptoAsset: any;
   totalAmount?: number;
   value: string;
   showTotal?: boolean;
@@ -22,6 +23,7 @@ const SwapInput = ({
   onChange,
   onClick,
   cryptoIcon,
+  cryptoAsset,
   ...props
 }: SwapInputProps) => {
   return (
@@ -46,8 +48,8 @@ const SwapInput = ({
         )}
       </div>
       <div className="flex items-center justify-end w-full">
-        <button
-          className="flex items-center justify-between h-10 py-4 px-3 rounded-lg space-x-2 bg-[#001d3d] text-white"
+        <div
+          className="flex items-center justify-between h-10 py-4 px-3 rounded-lg space-x-2 bg-[#001d3d] text-white cursor-pointer"
           onClick={onClick}
         >
           <span className="">
@@ -59,11 +61,11 @@ const SwapInput = ({
               height={24}
             />
           </span>
-          <span className="text-sm font-semibold">SOL</span>
+          <span className="text-sm font-semibold">{cryptoAsset.ticker}</span>
           <span>
             <ChevronDown />
           </span>
-        </button>
+        </div>
       </div>
     </div>
   );

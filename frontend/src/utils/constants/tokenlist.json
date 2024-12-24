@@ -1,0 +1,16 @@
+[
+  {
+    "ticker": "ETH",
+    "img": "",
+    "name": "Ethereum",
+    "address": "",
+    "decimal": 18
+  },
+  {
+    "ticker": "USDC",
+    "img": "",
+    "name": "USD Coin",
+    "address": "",
+    "decimal": 6
+  }
+]

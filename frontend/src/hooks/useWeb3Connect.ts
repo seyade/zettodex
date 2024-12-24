@@ -38,6 +38,11 @@ export function useWeb3Connect() {
         });
       }
     } catch (error) {
+      setState({
+        isConnected: false,
+        account: "",
+        chainId: "",
+      });
       setError(
         error instanceof Error ? error.message : "Oops! There is an error."
       );
@@ -64,6 +69,11 @@ export function useWeb3Connect() {
         chainId,
       });
     } catch (error) {
+      setState({
+        isConnected: false,
+        account: "",
+        chainId: "",
+      });
       setError(
         error instanceof Error ? error.message : "Oops! There is an error."
       );

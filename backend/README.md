@@ -13,5 +13,5 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 
 // deploy contract on the blockchain
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
+npx hardhat ignition deploy ./ignition/modules/ZettoDex.ts --network localhost
 ```
